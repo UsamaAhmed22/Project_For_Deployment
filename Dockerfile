@@ -5,29 +5,24 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Install dependencies
 COPY package.json pnpm-lock.yaml ./
-RUN corepack enable && pnpm install --frozen-lockfile
 
-# Copy source code
+# Pin pnpm version (match your lockfile)
+# If this version doesn't match, change 9.12.3 to the pnpm version you used locally.
+RUN corepack enable && corepack prepare pnpm@9.12.3 --activate \
+  && pnpm --version \
+  && pnpm install --frozen-lockfile
+
 COPY . .
-
-# Build Vite app
 RUN pnpm run build
-
 
 # =========================
 # Runtime Stage
 # =========================
 FROM nginx:1.27-alpine
-
-# Remove default nginx files
 RUN rm -rf /usr/share/nginx/html/*
-
-# Copy build output
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# SPA + health check config
 RUN printf '%s\n' \
 'server {' \
 '  listen 80;' \
@@ -43,5 +38,4 @@ RUN printf '%s\n' \
 '}' > /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
-
 HEALTHCHECK CMD wget -qO- http://127.0.0.1/healthz || exit 1
