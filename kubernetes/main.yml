@@ -1,41 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: demo-project-sorting:null
+  name: demo-project-sorting
+  namespace: demo-project-sorting
 spec:
-  replicas: 1   # 👈 SINGLE pod only (no scaling)
+  replicas: 1
   selector:
     matchLabels:
-      app: demo-project-sorting:null
+      app: demo-project-sorting
   template:
     metadata:
       labels:
-        app: demo-project-sorting:null
+        app: demo-project-sorting
     spec:
       containers:
-        - name: demo-project-sorting:null
-          image: demo-project-sorting:null
-          imagePullPolicy: Always
+        - name: demo-project-sorting
+          image: demo-project-sorting:latest
           ports:
             - containerPort: 80
-          resources:
-            requests:
-              cpu: "50m"
-              memory: "64Mi"
-            limits:
-              cpu: "200m"
-              memory: "256Mi"
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: demo-project-sorting:null
+  name: demo-project-sorting
+  namespace: demo-project-sorting
 spec:
-  type: NodePort        # 👈 Simple + works everywhere
+  type: NodePort
   selector:
-    app: demo-project-sorting:null
+    app: demo-project-sorting
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30080   # 👈 Fixed port (no randomness)
+      nodePort: 30080
