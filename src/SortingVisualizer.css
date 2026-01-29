@@ -1,0 +1,38 @@
+.sorting-visualizer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.array-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.array-bar {
+  width: 100%;
+  margin: 0 2px;
+  writing-mode: vertical-rl;
+  transition: height 0.05s;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+input {
+  margin-left: 5px;
+}
+
+/* Add more styles as needed */
