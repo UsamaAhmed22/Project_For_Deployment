@@ -1,28 +1,36 @@
 # =========================
-# Build Stage
+# Build Stage (glibc, NOT alpine)
 # =========================
-FROM node:20-alpine AS builder
+FROM node:20-slim AS builder
 
 WORKDIR /app
 
+# Copy lockfiles first (better caching)
 COPY package.json pnpm-lock.yaml ./
 
-# Pin pnpm version (match your lockfile)
-# If this version doesn't match, change 9.12.3 to the pnpm version you used locally.
-RUN corepack enable && corepack prepare pnpm@9.12.3 --activate \
-  && pnpm --version \
-  && pnpm install --frozen-lockfile
+# Pin pnpm version (matches your lockfile)
+RUN corepack enable \
+ && corepack prepare pnpm@9.12.3 --activate \
+ && pnpm --version \
+ && pnpm install --frozen-lockfile
 
+# Copy source
 COPY . .
+
+# Build app
 RUN pnpm run build
 
+
 # =========================
-# Runtime Stage
+# Runtime Stage (lightweight)
 # =========================
 FROM nginx:1.27-alpine
+
 RUN rm -rf /usr/share/nginx/html/*
+
 COPY --from=builder /app/dist /usr/share/nginx/html
 
+# SPA + health check
 RUN printf '%s\n' \
 'server {' \
 '  listen 80;' \
