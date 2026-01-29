@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: demo-project-sorting
+  name: demo-project-sorting:null
 spec:
   replicas: 1   # 👈 SINGLE pod only (no scaling)
   selector:
     matchLabels:
-      app: demo-project-sorting
+      app: demo-project-sorting:null
   template:
     metadata:
       labels:
-        app: demo-project-sorting
+        app: demo-project-sorting:null
     spec:
       containers:
-        - name: demo-project-sorting
-          image: demo-project-sorting:latest   # 👈 Jenkins CD replaces TAG here
+        - name: demo-project-sorting:null
+          image: demo-project-sorting:null
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -30,11 +30,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: demo-project-sorting
+  name: demo-project-sorting:null
 spec:
   type: NodePort        # 👈 Simple + works everywhere
   selector:
-    app: demo-project-sorting
+    app: demo-project-sorting:null
   ports:
     - port: 80
       targetPort: 80
