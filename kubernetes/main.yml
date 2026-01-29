@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: demo-project-sorting:null
-  namespace: demo-project-sorting:null
+  name: demo-project-sorting
+  namespace: demo-project-sorting
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: demo-project-sorting:null
+      app: demo-project-sorting
   template:
     metadata:
       labels:
-        app: demo-project-sorting:null
+        app: demo-project-sorting
     spec:
       containers:
-        - name: demo-project-sorting:null
-          image: usamaahmed99/demo-project-sorting:null
+        - name: demo-project-sorting
+          image: usamaahmed99/demo-project-sorting
           ports:
             - containerPort: 80
 
@@ -23,12 +23,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: demo-project-sorting:null
-  namespace: demo-project-sorting:null
+  name: demo-project-sorting
+  namespace: demo-project-sorting
 spec:
   type: NodePort
   selector:
-    app: demo-project-sorting:null
+    app: demo-project-sorting
   ports:
     - port: 80
       targetPort: 80
