@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: demo-project-sorting
-          image: demo-project-sorting:latest
+          image: usamaahmed99/demo-project-sorting:latest
           ports:
             - containerPort: 80
 
